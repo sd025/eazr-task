@@ -64,13 +64,9 @@ DELETE /api/tasks/:id
 🧠 Approach & Challenges
 Modular Architecture: Separate frontend/ and backend/, clear folders for routes, controllers, models, components.
 
-Unified Form: Single React form component handles both add & edit via ShadCN dialog.
-
 State Management: Simple useState/useEffect, no global context.
 
 API Layer: Centralized Axios instances with interceptors for auth.
-
-Date Formatting: Used Day.js for robust parsing/formatting (date + time).
 
 Responsive UI: Tailwind + MUI DataGrid → usable on mobile & desktop.
 
