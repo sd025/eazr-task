@@ -1,7 +1,6 @@
 import express from "express";
-import protectRoute from "../middleware/verify.js";
 import { body } from 'express-validator';
-import { loginUser, logoutUser, signupUser, updateUser } from "../controllers/users.js";
+import { loginUser, logoutUser, signupUser } from "../controllers/users.js";
 
 const router = express.Router();
 
@@ -18,10 +17,6 @@ router.post("/login", [
   loginUser
 );
 router.post("/logout", logoutUser);
-router.put("/update/:id", protectRoute, [
-        body('name').notEmpty().withMessage('Username is required'),
-        body('email').isEmail().withMessage('Valid email is required'),
-    ],
-    updateUser);
+
 
 export default router;

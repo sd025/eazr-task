@@ -1,5 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Button } from './ui/button';
+import { LogOut } from 'lucide-react';
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -9,14 +11,17 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="bg-white shadow px-4 py-3 flex justify-between">
-      <h1 className="text-xl font-bold">Task Management</h1>
-      <button
-        onClick={handleLogout}
-        className="text-red-500 hover:text-red-700"
-      >
-        Logout
-      </button>
+    <header className="bg-white shadow px-4 py-3 flex justify-between ">
+      <h1 className="text-xl font-semibold">Task Management</h1>
+      <div>
+        <Button
+          onClick={handleLogout}
+          variant='outline'
+          >
+          <LogOut/>
+          Logout
+        </Button>
+      </div>
     </header>
   );
 };

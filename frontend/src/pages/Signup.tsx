@@ -29,7 +29,8 @@ const Signup = () => {
       await promise;
       navigate("/");
     } catch (err: any) {
-      toast.error(err.response.data.errors[0].msg);
+      const message = err?.response?.data?.errors?.[0]?.msg || err?.response?.data?.error;
+      toast.error(message);
     }
   };
 
