@@ -1,10 +1,9 @@
 import {User} from "../models/user.js";
 import bcrypt from "bcryptjs";
 import generateTokenAndSetCookie from "../utils/token.js";
-import mongoose from "mongoose";
 import { validationResult } from 'express-validator';
 
-const signupUser = async (req, res) => {
+export const signupUser = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -44,7 +43,7 @@ const signupUser = async (req, res) => {
 	}
 };
 
-const loginUser = async (req, res) => {
+export const loginUser = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -70,7 +69,7 @@ const loginUser = async (req, res) => {
 	}
 };
 
-const logoutUser = (req, res) => {
+export const logoutUser = (req, res) => {
 	try {
 		res.cookie("jwt", "", { maxAge: 1 });
 		res.status(200).json({ message: "User logged out successfully" });
@@ -78,12 +77,4 @@ const logoutUser = (req, res) => {
 		res.status(500).json({ error: err.message });
 		console.log("Error in signupUser: ", err.message);
 	}
-};
-
-
-
-export {
-	signupUser,
-	loginUser,
-	logoutUser,
 };

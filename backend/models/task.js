@@ -6,6 +6,7 @@ const taskSchema = new mongoose.Schema({
   status:      { type: String, enum: ['To do', 'In Progress', 'Done'], default: 'To do' },
   dueDate:     { type: Date },
   userId:      { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
-});
+},	{ timestamps: true }
+);
 
-export default mongoose.model('Task', taskSchema);
+export const Task = mongoose.model('Task', taskSchema);
