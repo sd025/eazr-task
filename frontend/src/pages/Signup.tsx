@@ -30,7 +30,7 @@ const Signup = () => {
       localStorage.setItem('token', data.token);
       navigate('/dashboard');
     } catch (err: any) {
-      const message = err?.response?.data?.errors?.[0]?.msg || err?.response?.data?.error;
+      const message = err?.response?.data?.errors?.[0]?.msg || err?.response?.data?.error || 'Login failed';
       toast.error(message);
     }
   };

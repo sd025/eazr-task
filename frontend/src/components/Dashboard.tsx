@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid, GridColDef, GridActionsCellItem } from "@mui/x-data-grid";
 import { Task } from "@/lib/types/Task";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { Pencil, PlusIcon, Trash2 } from "lucide-react";
 import TaskItemSkeleton from "./TaskSkeleton";
@@ -10,7 +9,7 @@ import { Input } from "./ui/input";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "./ui/select";
 import { Button } from "./ui/button";
 import Header from "./Header";
-import { getTasks } from "@/lib/task";
+import { deleteTask, getTasks } from "@/lib/task";
 import dayjs from "dayjs";
 
 const TaskList: React.FC = () => {
@@ -54,11 +53,8 @@ const TaskList: React.FC = () => {
   }, [search, statusFilter, tasks]);
 
   const handleDelete = async (id: string) => {
-    const token = localStorage.getItem("token");
     try {
-      await axios.delete(`/api/tasks/${id}`, {
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
-      });
+      await deleteTask(id);
       toast.success("Task deleted");
       fetchTasks();
     } catch (err) {

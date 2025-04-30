@@ -10,9 +10,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { Task } from "@/lib/types/Task";
+import { createTask, updateTask } from "@/lib/task";
 
 type Props = {
   editingTask?: Task | null;
@@ -28,32 +28,29 @@ const TaskFormDialog: React.FC<Props> = ({ editingTask, onTaskSaved, open, setOp
   const [dueDate, setDueDate] = useState("");
 
   useEffect(() => {
-    if (editingTask) {
-      setTitle(editingTask.title);
-      setDescription(editingTask.description || "");
-      setStatus(editingTask.status);
-      setDueDate(editingTask.dueDate.slice(0, 10));
-    } else {
+    if (open && !editingTask) {
       setTitle("");
       setDescription("");
       setStatus("To do");
       setDueDate("");
     }
-  }, [editingTask]);
+  
+    if (editingTask) {
+      setTitle(editingTask.title);
+      setDescription(editingTask.description || "");
+      setStatus(editingTask.status);
+      setDueDate(editingTask.dueDate.slice(0, 10));
+    }
+  }, [editingTask, open]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
     const payload = { title, description, status, dueDate };
 
     try {
       const promise = editingTask
-        ? axios.put(`/api/tasks/${editingTask._id}`, payload, {
-            headers: token ? { Authorization: `Bearer ${token}` } : {},
-          })
-        : axios.post("/api/tasks", payload, {
-            headers: token ? { Authorization: `Bearer ${token}` } : {},
-          });
+      ? updateTask(editingTask._id, payload)
+      : createTask(payload);
 
       toast.promise(promise, {
         loading: editingTask ? "Updating task..." : "Adding task...",

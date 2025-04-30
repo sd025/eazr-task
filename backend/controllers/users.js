@@ -26,18 +26,14 @@ export const signupUser = async (req, res) => {
 		});
 		await newUser.save();
 
-		if (newUser) {
-			const token = generateTokenAndSetCookie(newUser._id, res);
+		const token = generateTokenAndSetCookie(newUser._id);
 
-			res.status(201).json({
-				_id: newUser._id,
-				name: newUser.name,
-				email: newUser.email,
-				token,
-			});
-		} else {
-			res.status(400).json({ error: "Invalid user data" });
-		}
+		res.status(201).json({
+			_id: newUser._id,
+			name: newUser.name,
+			email: newUser.email,
+			token,
+		});
 	} catch (err) {
 		res.status(500).json({ error: err.message });
 		console.log("Error in signupUser: ", err.message);
@@ -57,7 +53,7 @@ export const loginUser = async (req, res) => {
 
 		if (!user || !isPasswordCorrect) return res.status(400).json({ error: "Invalid email or password" });
 
-		const token = generateTokenAndSetCookie(newUser._id, res);
+		const token = generateTokenAndSetCookie(user._id);
 
 		res.status(200).json({
 			_id: user._id,
@@ -73,7 +69,6 @@ export const loginUser = async (req, res) => {
 
 export const logoutUser = (req, res) => {
 	try {
-		res.cookie("jwt", "", { maxAge: 1 });
 		res.status(200).json({ message: "User logged out successfully" });
 	} catch (err) {
 		res.status(500).json({ error: err.message });
