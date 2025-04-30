@@ -26,8 +26,9 @@ const Signup = () => {
       error: 'Registration failed'
     });
     try {
-      await promise;
-      navigate("/");
+      const { data } = await promise;
+      localStorage.setItem('token', data.token);
+      navigate('/dashboard');
     } catch (err: any) {
       const message = err?.response?.data?.errors?.[0]?.msg || err?.response?.data?.error;
       toast.error(message);

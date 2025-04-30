@@ -2,12 +2,17 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import { LogOut } from 'lucide-react';
+import axios from 'axios';
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      await axios.post("/api/auth/logout");
+    } finally {
+      localStorage.removeItem("token");
+      navigate("/login");
+    }
   };
 
   return (
