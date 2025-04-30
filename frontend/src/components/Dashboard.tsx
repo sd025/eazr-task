@@ -76,18 +76,40 @@ const TaskList: React.FC = () => {
   const columns: GridColDef[] = [
     { field: "title", headerName: "Title", width: 200},
     { field: "description", headerName: "Description", flex: 1 },
-    { field: "status", headerName: "Status", width: 150 },
+    { field: "status", headerName: "Status", width: 200,
+      renderCell: (params: any) => {
+				const statusType = params.value.toLowerCase();
+				return (
+          statusType === "done" ? (
+					<span className="bg-green-100 px-2 py-[2px] rounded-full text-xs font-medium whitespace-nowrap" >
+              Done
+					</span>
+				) : statusType === "in progress" ? (
+          <span className=" m-0 bg-amber-100 px-2 py-[2px] rounded-full text-xs font-medium whitespace-nowrap">
+            In Pogress
+					</span>
+        ) : statusType === "to do" ? (
+					<span className=" px-2 py-[2px] rounded-full text-xs font-medium whitespace-nowrap bg-blue-100">
+            To do
+					</span>
+				) : ( 
+          <>undefined</>
+        )
+			)
+		},
+     },
     { field: "dueDate", headerName: "Due Date", width: 200,  
       valueFormatter: (params: any) => {
-        const formatted = dayjs(params.value).format("MMM D, YYYY h:mm A");
+        const timestamp = params;
+        const formatted = dayjs(timestamp).format("MMM D, YYYY");
         return formatted === "Invalid Date" ? "-" : formatted;
-    },
+      },
     },
     {
       field: "actions",
       type: "actions",
       headerName: "Actions",
-      width: 120,
+      width: 150,
       getActions: (params) => [
         <GridActionsCellItem
           icon={<Pencil color="orange" strokeWidth="1"/>}
